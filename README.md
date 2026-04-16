@@ -11,6 +11,15 @@ The **Door** system is designed to eliminate friction in building access. It all
 
 ---
 
+## ⚠️ Disclaimer
+**This project is experimental and for educational purposes only.**
+*   It utilizes only official Android and Wear OS APIs (e.g., `KeyguardManager`, `Wearable Data Layer`).
+*   It **does not** bypass system security mechanisms; it relies on standard features like *Smart Lock (Trusted Devices)* to function.
+*   It requires explicit user permissions and configuration.
+*   This project is **not** affiliated with, authorized by, or in any way officially connected to HID Global. It does not automate or interfere with the internal security logic of the HID Mobile Access® application.
+
+---
+
 ## 🛠️ System Architecture
 
 ### 1. Watch Module (`:app`) - "The Stealth Trigger"
