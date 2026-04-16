@@ -11,11 +11,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Se a Intent vier do WearMessageListenerService, tentamos desbloquear
+        // If the Intent comes from WearMessageListenerService, try to unlock
         if (intent.getBooleanExtra("dismiss_keyguard", false)) {
             dismissKeyguard()
         } else {
-            // Se for aberta manualmente, apenas fechamos para manter o comportamento "sem interface"
+            // If opened manually, just close it to maintain the "no interface" behavior
             finish()
         }
     }
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
                         WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             )
-            // Para versões antigas, damos um pequeno delay antes de fechar para garantir que os flags funcionem
+            // For older versions, add a small delay before closing to ensure flags work
             window.decorView.postDelayed({ finish() }, 500)
         }
     }
