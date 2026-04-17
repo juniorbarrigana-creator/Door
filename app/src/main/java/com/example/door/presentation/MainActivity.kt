@@ -7,13 +7,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
@@ -25,17 +28,37 @@ class MainActivity : ComponentActivity() {
             return
         }
 
+        // Register listener for the phone's confirmation
+        Wearable.getMessageClient(this).addListener(this)
+
         // The Activity starts transparent and executes the logic immediately
         lifecycleScope.launch {
             // 1. Send unlock message to the phone
             sendUnlockMessage()
             
-            // 2. Try to open the HID app
-            launchHIDApp()
+            // We don't call launchHIDApp here anymore. 
+            // We wait for the message in onMessageReceived.
             
-            // 3. Finish this app to avoid staying in background
+            // Safety timeout: if phone doesn't respond in 10 seconds, finish anyway
+            delay(10000)
             finish()
         }
+    }
+
+    override fun onMessageReceived(messageEvent: MessageEvent) {
+        if (messageEvent.path == "/unlock_done") {
+            lifecycleScope.launch {
+                Log.d("DoorUnlock", "Phone confirmed unlock. Waiting 2 seconds...")
+                delay(2000) // The 2-second delay you requested
+                launchHIDApp()
+                finish()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Wearable.getMessageClient(this).removeListener(this)
     }
 
     private suspend fun sendUnlockMessage() {

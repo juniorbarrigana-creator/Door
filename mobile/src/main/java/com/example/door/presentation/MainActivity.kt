@@ -6,6 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.wearable.Wearable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +26,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun sendConfirmationToWatch() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val nodeClient = Wearable.getNodeClient(this@MainActivity)
+                    val messageClient = Wearable.getMessageClient(this@MainActivity)
+                    val nodes = nodeClient.connectedNodes.await()
+                    for (node in nodes) {
+                        messageClient.sendMessage(node.id, "/unlock_done", "done".toByteArray()).await()
+                    }
+                } catch (e: Exception) {
+                    // Fail silently
+                }
+            }
+        }
+    }
+
     private fun dismissKeyguard() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -28,6 +51,7 @@ class MainActivity : ComponentActivity() {
             keyguardManager.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
                 override fun onDismissSucceeded() {
                     super.onDismissSucceeded()
+                    sendConfirmationToWatch()
                     finish()
                 }
 
