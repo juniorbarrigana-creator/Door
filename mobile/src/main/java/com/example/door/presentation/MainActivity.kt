@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     for (node in nodes) {
                         messageClient.sendMessage(node.id, "/unlock_done", "done".toByteArray()).await()
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // Fail silently
                 }
             }
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
-            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
             keyguardManager.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
                 override fun onDismissSucceeded() {
                     super.onDismissSucceeded()
