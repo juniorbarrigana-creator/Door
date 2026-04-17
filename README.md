@@ -78,10 +78,12 @@ To ensure the best "zero-touch" experience:
 
 ---
 
-## ⚡ Hands-Free Usage (Advanced Tip)
+## ⚡ Hands-Free Usage & Real-World Use Cases
 For a truly "Zero-Touch" experience, you can combine this app with **Wear OS Gestures**:
-*   **The "Knock-Knock" (Truz-Truz) Gesture:** Many Wear OS watches (like Pixel Watch or Galaxy Watch) allow you to map a "Double Flick" or "Shake" gesture to launch a specific app.
-*   **Remote Opening:** By mapping this gesture to the **Door** app, you can unlock your phone and trigger the HID reader while walking towards the door, without even touching your watch screen.
+
+*   **The "Knock-Knock" Gesture:** Most modern Wear OS watches (Pixel Watch, Galaxy Watch) allow you to map a "Double Flick" or "Wrist Shake" gesture to launch the **Door** app.
+*   **🚲 The "Bike Out" Scenario:** Imagine leaving your garage on a bicycle. Your hands are on the handlebars, and your phone is buried deep in your backpack or pocket. By simply performing the "Knock-Knock" wrist gesture, the garage's HID reader will detect your mobile credential as you approach, without you having to stop or touch any device.
+*   **Remote Opening:** Trigger the unlock process while walking towards the door. By the time you reach the reader, the phone is already unlocked and the HID app is active in the background.
 *   **Distance Context:** Since the phone unlocks in your pocket and the HID app starts immediately, the door reader will detect your mobile credential as soon as you are in range.
 
 ---
