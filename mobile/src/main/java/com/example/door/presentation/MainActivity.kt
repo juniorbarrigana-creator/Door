@@ -1,7 +1,6 @@
 package com.example.door.presentation
 
 import android.app.KeyguardManager
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager

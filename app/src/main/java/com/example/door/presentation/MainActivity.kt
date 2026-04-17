@@ -1,6 +1,8 @@
 package com.example.door.presentation
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +23,8 @@ class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
         super.onCreate(savedInstanceState)
         
         // Check if Bluetooth is enabled
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothAdapter = bluetoothManager.adapter
         if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled) {
             Toast.makeText(this, "Please enable Bluetooth to unlock door", Toast.LENGTH_LONG).show()
             finish()
@@ -92,7 +95,6 @@ class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
             if (hidPackage != null) {
                 val intent = pm.getLaunchIntentForPackage(hidPackage.packageName)
                 if (intent != null) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     Log.d("DoorUnlock", "Launching HID: ${hidPackage.packageName}")
                 }
